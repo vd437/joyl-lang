@@ -51,4 +51,4 @@ We follow [Semantic Versioning](https://semver.org/):
 - `PATCH`: Bug fixes
 
 ### Viewing Detailed Changes
-Full commit history available on [GitHub](https://github.com/vd43i/joyl/commits/main)
+Full commit history available on [GitHub](https://github.com/vd437/joyl/commits/main)
