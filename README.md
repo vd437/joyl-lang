@@ -17,71 +17,10 @@
 - **Async/Await**: Modern asynchronous programming made easy.
 - **Strong Type System**: Static typing with type inference and optional type annotations.
 - **Cross-Platform**: Runs on Windows, Linux, Android.
-# Joyl Programming Language
-
-**Joyl** is a modern, hybrid programming language designed to combine the simplicity of Python with the speed and memory safety of C and Rust. Joyl is built to be beginner-friendly, yet powerful enough for professional use in areas like web development, embedded systems, AI, games, and scripting.
-
----
-
-## Features
-
-- **Elegant Syntax**: Clean and readable syntax inspired by Python, Ruby, and JavaScript.
-- **High Performance**: Compiles to bytecode and optionally to native machine code.
-- **Memory Safety**: Ownership-based memory model inspired by Rust, with no garbage collector.
-- **Multi-Paradigm Support**: Procedural, Object-Oriented, Functional.
-- **Rich Standard Library**: Includes modules for math, strings, I/O, networking, async, and more.
-- **Async/Await**: Modern asynchronous programming made easy.
-- **Strong Type System**: Static typing with type inference and optional type annotations.
-- **Cross-Platform**: Runs on Windows, Linux, Android.
 
 ---
 
 ## Code Example
-
-<p align="center">
-  <img src="assets/joyl-logo.png" alt="Joyl Logo" width="500"/>
-</p>
-# Joyl Programming Language
-
-**Joyl** is a modern, hybrid programming language designed to combine the simplicity of Python with the speed and memory safety of C and Rust. Joyl is built to be beginner-friendly, yet powerful enough for professional use in areas like web development, embedded systems, AI, games, and scripting.
-
----
-
-## Features
-
-- **Elegant Syntax**: Clean and readable syntax inspired by Python, Ruby, and JavaScript.
-- **High Performance**: Compiles to bytecode and optionally to native machine code.
-- **Memory Safety**: Ownership-based memory model inspired by Rust, with no garbage collector.
-- **Multi-Paradigm Support**: Procedural, Object-Oriented, Functional.
-- **Rich Standard Library**: Includes modules for math, strings, I/O, networking, async, and more.
-- **Async/Await**: Modern asynchronous programming made easy.
-- **Strong Type System**: Static typing with type inference and optional type annotations.
-- **Cross-Platform**: Runs on Windows, Linux, Android.
-# Joyl Programming Language
-
-**Joyl** is a modern, hybrid programming language designed to combine the simplicity of Python with the speed and memory safety of C and Rust. Joyl is built to be beginner-friendly, yet powerful enough for professional use in areas like web development, embedded systems, AI, games, and scripting.
-
----
-
-## Features
-
-- **Elegant Syntax**: Clean and readable syntax inspired by Python, Ruby, and JavaScript.
-- **High Performance**: Compiles to bytecode and optionally to native machine code.
-- **Memory Safety**: Ownership-based memory model inspired by Rust, with no garbage collector.
-- **Multi-Paradigm Support**: Procedural, Object-Oriented, Functional.
-- **Rich Standard Library**: Includes modules for math, strings, I/O, networking, async, and more.
-- **Async/Await**: Modern asynchronous programming made easy.
-- **Strong Type System**: Static typing with type inference and optional type annotations.
-- **Cross-Platform**: Runs on Windows, Linux, Android.
-
----
-
-## Code Example
-
-// ======================
-// Joyl Language Demo
-// File: demo.jl
-// ======================
 
 // 1. Basic Output
 print("Hello, World!")
@@ -159,4 +98,3 @@ try {
 // 9. Main execution
 print(greet(username))
 print("5! = " + str(factorial(5)))￼Enter
-￼Enter// ======================
