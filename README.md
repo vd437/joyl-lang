@@ -1,7 +1,7 @@
 <p align="center">
   <img src="assets/joyl-logo.png" alt="Joyl Logo" width="500"/>
 </p>
-# Joyl Programming Language
+#Joyl Programming Language
 
 **Joyl** is a modern, hybrid programming language designed to combine the simplicity of Python with the speed and memory safety of C and Rust. Joyl is built to be beginner-friendly, yet powerful enough for professional use in areas like web development, embedded systems, AI, games, and scripting.
 
