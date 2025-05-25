@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/joyl-logo.png" alt="Joyl Logo" width="200"/>
+  <img src="assets/joyl-logo.png" alt="Joyl Logo" width="500"/>
 </p>
 # Joyl Programming Language
 
