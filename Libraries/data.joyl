@@ -1,0 +1,95 @@
+// data.joyl - Professional data processing
+pub struct DataFrame {
+    columns: {string: Column},
+    index: [string],
+    schema: Schema
+}
+
+pub struct Column {
+    name: string,
+    dtype: DType,
+    data: any,
+    null_count: int
+}
+
+pub enum DType {
+    Int32,
+    Float64,
+    String,
+    Bool,
+    DateTime
+}
+
+impl DataFrame {
+    /// Load data from Parquet file
+    pub fn from_parquet(path: string) -> DataFrame {
+        let file = ParquetFile.open(path);
+        let schema = file.read_schema();
+        
+        let mut columns = {};
+        for col in schema.columns {
+            let data = file.read_column(col.name);
+            columns[col.name] = Column {
+                name: col.name,
+                dtype: col.dtype,
+                data: data,
+                null_count: data.count_nulls()
+            };
+        }
+        
+        DataFrame {
+            columns,
+            index: range(0, file.num_rows()).map(str),
+            schema
+        }
+    }
+
+    /// Filter rows based on predicate
+    pub fn filter(&self, predicate: fn(Row) -> bool) -> DataFrame {
+        let mut mask = [false] * self.len();
+        
+        // Parallel filtering
+        parallel_for i in 0..self.len() {
+            let row = self.get_row(i);
+            mask[i] = predicate(row);
+        }
+        
+        return self.apply_mask(mask);
+    }
+
+    /// Group data by specified columns
+    pub fn groupby(&self, keys: [string]) -> GroupBy {
+        let mut groups = HashMap::new();
+        
+        for i in 0..self.len() {
+            let key = keys.map(|k| self.columns[k].data[i]).join("_");
+            groups.entry(key).or_insert([]).push(i);
+        }
+        
+        GroupBy {
+            groups,
+            df: self
+        }
+    }
+}
+
+// GroupBy operations
+impl GroupBy {
+    /// Aggregate grouped data
+    pub fn agg(&self, ops: {string: AggFunc}) -> DataFrame {
+        let mut result_data = {};
+        
+        for (col, func) in ops {
+            let mut values = [];
+            
+            for (_, indices) in &self.groups {
+                let group_values = indices.map(|i| self.df.columns[col].data[i]);
+                values.push(func.compute(group_values));
+            }
+            
+            result_data[col] = values;
+        }
+        
+        return DataFrame::from_dict(result_data);
+    }
+}

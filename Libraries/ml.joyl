@@ -1,0 +1,118 @@
+// ml.joyl - Industrial-strength ML library
+pub struct Tensor {
+    data: [float],
+    shape: [int],
+    strides: [int],
+    device: Device
+}
+
+pub enum Device {
+    CPU,
+    GPU
+}
+
+impl Tensor {
+    /// Creates new tensor with specified shape
+    pub fn new(shape: [int], device: Device = Device.CPU) -> Tensor {
+        // Calculate total elements and memory strides
+        let size = shape.product();
+        let strides = calculate_strides(shape);
+        
+        // Optimized initialization
+        let data = match device {
+            Device.CPU => [0.0] * size,
+            Device.GPU => native_gpu_allocate(shape)
+        };
+        
+        Tensor { data, shape, strides, device }
+    }
+
+    /// Matrix multiplication with automatic broadcasting
+    pub fn matmul(self, other: Tensor) -> Tensor {
+        // Validate dimensions
+        assert(self.shape[1] == other.shape[0], 
+            "Matrix dimensions mismatch in matmul");
+        assert(self.device == other.device, 
+            "Cannot multiply tensors on different devices");
+        
+        let result = Tensor.new([self.shape[0], other.shape[1]], self.device);
+        
+        // Dispatch to optimized implementations
+        match self.device {
+            Device.CPU => cpu_matmul(self, other, result),
+            Device.GPU => gpu_matmul(self, other, result)
+        }
+        
+        return result;
+    }
+
+    /// Transfer tensor between devices
+    pub fn to(self, device: Device) -> Tensor {
+        if self.device == device {
+            return self.copy();
+        }
+        
+        let new_tensor = Tensor.new(self.shape, device);
+        native_transfer_data(self, new_tensor);
+        return new_tensor;
+    }
+}
+
+// Optimized CPU matrix multiplication
+fn cpu_matmul(a: Tensor, b: Tensor, result: Tensor) {
+    // Parallelized matrix multiplication
+    parallel_for i in 0..a.shape[0] {
+        for k in 0..a.shape[1] {
+            let a_val = a.get([i, k]);
+            for j in 0..b.shape[1] {
+                result.data[i * result.strides[0] + j] += a_val * b.get([k, j]);
+            }
+        }
+    }
+}
+
+// Neural Network Implementation
+pub struct NeuralNetwork {
+    layers: [Layer],
+    loss_fn: LossFunction,
+    optimizer: Optimizer
+}
+
+impl NeuralNetwork {
+    /// Forward pass through the network
+    pub fn forward(&self, x: Tensor) -> Tensor {
+        let mut output = x;
+        for layer in &self.layers {
+            output = layer.forward(output);
+        }
+        return output;
+    }
+
+    /// Train the model with batched data
+    pub fn train(&mut self, x: Tensor, y: Tensor, epochs: int, batch_size: int) {
+        let dataset = Dataset(x, y);
+        let loader = DataLoader(dataset, batch_size, shuffle=true);
+        
+        for epoch in 1..epochs {
+            let mut total_loss = 0.0;
+            
+            // Process batches
+            for (x_batch, y_batch) in loader {
+                // Forward pass
+                let output = self.forward(x_batch);
+                
+                // Compute loss
+                let loss = self.loss_fn.compute(output, y_batch);
+                total_loss += loss;
+                
+                // Backpropagation
+                let grads = self.backward(output, y_batch);
+                
+                // Update weights
+                self.optimizer.step(grads);
+            }
+            
+            println(f"Epoch {epoch}, Avg Loss: {total_loss / loader.len()}");
+        }
+    }
+}
