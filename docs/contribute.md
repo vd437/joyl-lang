@@ -13,7 +13,7 @@ We welcome all contributors! To get started:
 4. Make your changes and submit a pull request
 
 ```bash
-git clone https://github.com/vd43i/joyl.git
+git clone https://github.com/vd437/joyl.git
 cd joyl
 python -m pip install -e .
 
