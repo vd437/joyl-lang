@@ -1,0 +1,31 @@
+// datetime.joyl
+pub struct DateTime {
+    year: int,
+    month: int,
+    day: int,
+    hour: int,
+    minute: int,
+    second: int,
+    tz: string
+}
+
+pub fn now() -> DateTime {
+    let ts = native_time_now();
+    return native_time_parse(ts);
+}
+
+pub fn DateTime.format(self, fmt: string) -> string {
+    return native_time_format(self, fmt);
+}
+
+pub fn sleep(seconds: float) {
+    native_time_sleep(seconds);
+}
+
+pub fn timestamp() -> int {
+    return native_time_now();
+}
+
+pub fn from_timestamp(ts: int) -> DateTime {
+    return native_time_parse(ts);
+}

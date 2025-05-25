@@ -1,0 +1,59 @@
+// io.joyl - نظام الملفات المتقدم
+pub struct File {
+    handle: int,
+    path: string,
+    mode: string
+}
+
+pub fn open(path: string, mode: string = "r") -> File {
+    let handle = native_fs_open(path, mode);
+    if handle == -1 {
+        panic("Failed to open file: " + path, Error.FileNotFound);
+    }
+    return File { handle, path, mode };
+}
+
+pub fn File.read(self, size: int = -1) -> string {
+    return native_fs_read(self.handle, size);
+}
+
+pub fn File.write(self, content: string) -> int {
+    return native_fs_write(self.handle, content);
+}
+
+pub fn File.close(self) {
+    native_fs_close(self.handle);
+}
+
+pub fn read_all(path: string) -> string {
+    let f = open(path);
+    let content = f.read();
+    f.close();
+    return content;
+}
+
+pub fn write_all(path: string, content: string) {
+    let f = open(path, "w");
+    f.write(content);
+    f.close();
+}
+
+pub fn copy(src: string, dest: string) {
+    native_fs_copy(src, dest);
+}
+
+pub fn move(src: string, dest: string) {
+    native_fs_move(src, dest);
+}
+
+pub fn list_dir(path: string) -> [string] {
+    return native_fs_listdir(path);
+}
+
+pub fn is_dir(path: string) -> bool {
+    return native_fs_isdir(path);
+}
+
+pub fn file_size(path: string) -> int {
+    return native_fs_size(path);
+}

@@ -1,0 +1,51 @@
+// concurrent.joyl - تزامن متقدم
+pub struct Thread {
+    id: int,
+    running: bool
+}
+
+pub fn thread_create(fn: () -> any) -> Thread {
+    let id = native_thread_create(fn);
+    return Thread { id, running: true };
+}
+
+pub fn Thread.join(self) {
+    native_thread_join(self.id);
+    self.running = false;
+}
+
+pub struct Mutex {
+    lock: any
+}
+
+pub fn mutex_create() -> Mutex {
+    return Mutex { lock: native_mutex_create() };
+}
+
+pub fn Mutex.lock(self) {
+    native_mutex_lock(self.lock);
+}
+
+pub fn Mutex.unlock(self) {
+    native_mutex_unlock(self.lock);
+}
+
+pub struct Channel {
+    id: int,
+    buffer_size: int
+}
+
+pub fn channel_create(buffer_size: int = 0) -> Channel {
+    return Channel {
+        id: native_channel_create(buffer_size),
+        buffer_size
+    };
+}
+
+pub fn Channel.send(self, data: any) {
+    native_channel_send(self.id, data);
+}
+
+pub fn Channel.recv(self) -> any {
+    return native_channel_recv(self.id);
+}

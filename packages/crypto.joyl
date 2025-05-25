@@ -1,0 +1,21 @@
+// crypto.joyl
+pub fn hash_sha256(data: string) -> string {
+    return native_crypto_hash(data, "sha256");
+}
+
+pub fn encrypt_aes(data: string, key: string) -> string {
+    return native_crypto_encrypt(data, key, "aes-256-cbc");
+}
+
+pub fn decrypt_aes(data: string, key: string) -> string {
+    return native_crypto_decrypt(data, key, "aes-256-cbc");
+}
+
+pub struct RSAKeyPair {
+    public_key: string,
+    private_key: string
+}
+
+pub fn generate_rsa_key(bits: int = 2048) -> RSAKeyPair {
+    return native_crypto_generate_rsa(bits);
+}

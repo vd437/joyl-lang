@@ -1,0 +1,44 @@
+// math.joyl - رياضيات متقدمة
+pub const PI = 3.141592653589793;
+pub const E = 2.718281828459045;
+
+pub fn sqrt(x: float) -> float {
+    return native_math_sqrt(x);
+}
+
+pub fn sin(x: float) -> float {
+    return native_math_sin(x);
+}
+
+pub fn log(x: float) -> float {
+    return native_math_log(x);
+}
+
+pub struct Vector {
+    x: float,
+    y: float,
+    z: float
+}
+
+pub fn Vector.magnitude(self) -> float {
+    return sqrt(self.x*self.x + self.y*self.y + self.z*self.z);
+}
+
+pub fn Vector.normalize(self) -> Vector {
+    let mag = self.magnitude();
+    return Vector {
+        x: self.x / mag,
+        y: self.y / mag,
+        z: self.z / mag
+    };
+}
+
+pub struct Matrix {
+    data: [[float]]
+}
+
+pub fn Matrix.multiply(self, other: Matrix) -> Matrix {
+    let result = Matrix { data: [] };
+    // تنفيذ ضرب المصفوفات...
+    return result;
+}

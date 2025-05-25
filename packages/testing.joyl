@@ -1,0 +1,37 @@
+// testing.joyl
+pub struct TestCase {
+    name: string,
+    passed: bool,
+    duration: float
+}
+
+pub fn test(name: string, fn: () -> any) -> TestCase {
+    let start = native_time_now();
+    let passed = false;
+    try {
+        fn();
+        passed = true;
+    } catch e {
+        println(`Test ${name} failed: ${e.message}`);
+    }
+    let end = native_time_now();
+    return TestCase {
+        name,
+        passed,
+        duration: end - start
+    };
+}
+
+pub fn run_tests(tests: [() -> TestCase]) {
+    let total = 0;
+    let passed = 0;
+    for test_fn in tests {
+        let result = test_fn();
+        total += 1;
+        if result.passed {
+            passed += 1;
+        }
+        println(`${result.name}: ${result.passed ? "PASS" : "FAIL"} (${result.duration}ms)`);
+    }
+    println(`\nResults: ${passed}/${total} tests passed`);
+}

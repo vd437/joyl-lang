@@ -1,0 +1,18 @@
+// json.joyl
+pub fn parse(json_str: string) -> any {
+    return native_json_parse(json_str);
+}
+
+pub fn stringify(obj: any, pretty: bool = false) -> string {
+    return native_json_stringify(obj, pretty);
+}
+
+pub fn read_file(path: string) -> any {
+    let content = io.read_all(path);
+    return parse(content);
+}
+
+pub fn write_file(path: string, obj: any, pretty: bool = false) {
+    let content = stringify(obj, pretty);
+    io.write_all(path, content);
+}

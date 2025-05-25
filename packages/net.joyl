@@ -1,0 +1,41 @@
+// net.joyl - شبكات متقدمة
+pub struct Socket {
+    fd: int,
+    protocol: string
+}
+
+pub enum Protocol {
+    TCP,
+    UDP,
+    HTTP,
+    HTTPS
+}
+
+pub fn socket_create(proto: Protocol) -> Socket {
+    let fd = native_net_socket(proto);
+    return Socket { fd, protocol: proto.name() };
+}
+
+pub fn Socket.connect(self, host: string, port: int) {
+    native_net_connect(self.fd, host, port);
+}
+
+pub fn Socket.send(self, data: string) -> int {
+    return native_net_send(self.fd, data);
+}
+
+pub fn Socket.recv(self, buf_size: int = 1024) -> string {
+    return native_net_recv(self.fd, buf_size);
+}
+
+pub fn Socket.close(self) {
+    native_net_close(self.fd);
+}
+
+pub fn http_get(url: string) -> string {
+    return native_http_request("GET", url, "");
+}
+
+pub fn http_post(url: string, data: string) -> string {
+    return native_http_request("POST", url, data);
+}
