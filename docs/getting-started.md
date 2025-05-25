@@ -1,45 +1,39 @@
-# Getting Started with **Joyl**
+# Getting Started with Joyl
 
-> A modern programming language that blends Python simplicity with C/Rust performance.  
-> This quick guide helps you start coding with Joyl in just a few minutes.
+Welcome to **Joyl** — a modern programming language that combines Python’s simplicity with the performance and memory safety of C and Rust.
+
+This guide will help you set up Joyl and run your first program in just a few minutes.
 
 ---
 
-## ⭐ 1. Installation
+## 1. Installation
 
-**Clone the repository and install Joyl locally:**
+### Requirements
+- Python 3.10+
+- Git
+
+### Steps
 
 ```bash
 git clone https://github.com/vd437/joyl.git
 cd joyl
 python -m pip install -e .
 
-Requirements:
-
-Python 3.10+
-
-Git
-
-
 
 ---
 
-⭐ 2. Run Your First Program
+2. Running Your First Joyl Program
 
-Execute a .jl file using the interpreter:
+To run any .jl file using the Joyl interpreter:
 
 python src/joyl.py examples/hello_world.jl
 
-> Make sure your file path is correct.
-
-
-
 
 ---
 
-⭐ 3. Hello World Example
+3. Writing a Hello World
 
-Create a new file hello.jl:
+Create a file named hello.jl with this code:
 
 print("Hello from Joyl!")
 
@@ -50,74 +44,83 @@ python src/joyl.py hello.jl
 
 ---
 
-⭐ 4. Explore Example Programs
+4. Explore Built-in Examples
 
-Joyl comes with a set of ready-made examples. Try them:
+Joyl includes several examples in the examples/ directory:
 
-cd examples/
-python ../src/joyl.py calculator.jl
+Example Files
 
-Included examples:
+hello_world.jl — Print a message
 
-hello_world.jl
+calculator.jl — Basic calculator
 
-calculator.jl
+loops.jl — Loop structures
 
-loops.jl
+classes.jl — Object-oriented features
 
-classes.jl
+error_handling.jl — Try/catch demonstration
 
-error_handling.jl
 
+Run an example:
+
+python src/joyl.py examples/calculator.jl
 
 
 ---
 
-⭐ 5. Debugging Mode (Optional)
+5. Debug Mode
 
-Enable debug mode to trace execution:
+Use debug mode to trace each step of your program:
 
 python src/joyl.py --debug examples/yourfile.jl
 
 
 ---
 
-⭐ 6. Recommended Tools
+6. Developer Tools
 
-Make your experience smoother with these tools:
+Useful Python Tools
 
-pytest — for running tests
+pytest — Run test cases
 
-black — for code formatting
+black — Format your code
 
-VS Code Extensions:
+
+VS Code Extensions
 
 Python
 
 Pylance
 
-Mermaid Preview
-
-
-
-
----
-
-⭐ 7. What’s Next?
-
-Explore the full documentation:
-
-📘 Syntax Reference
-
-⚙️ Architecture Overview
-
-🛠️ Contribute to Joyl
-
-📒 Changelog
+Mermaid Preview (for diagrams in documentation)
 
 
 
 ---
 
-Joyl is an open-source language.
-Join us and help shape the future of programming!
+7. Next Steps
+
+Learn more by exploring the rest of our documentation:
+
+Syntax Guide
+
+Architecture Overview
+
+Contributing Guide
+
+Changelog
+
+
+
+---
+
+8. Community & Contributions
+
+Joyl is an open-source project maintained by passionate developers.
+
+If you'd like to contribute, start with the Contribution Guide, and don't forget to join our discussions and Discord (coming soon).
+
+
+---
+
+Happy coding with Joyl!
