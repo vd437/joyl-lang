@@ -1,0 +1,106 @@
+// graphics.joyl - Professional 2D/3D Rendering Engine
+pub struct GraphicsEngine {
+    window: NativeWindow,
+    renderer: RendererBackend,
+    shader_manager: ShaderManager,
+    texture_manager: TextureManager,
+    material_system: MaterialSystem,
+    render_queue: RenderQueue,
+    stats: RenderStats
+}
+
+impl GraphicsEngine {
+    /// Initialize graphics engine with specified backend
+    pub fn new(
+        title: string, 
+        width: int, 
+        height: int,
+        backend: RenderBackend = RenderBackend.Vulkan
+    ) -> Result<GraphicsEngine, GraphicsError> {
+        // Window creation
+        let window = native_create_window(
+            title, 
+            width, 
+            height, 
+            WindowFlags::RESIZABLE
+        )?;
+        
+        // Backend initialization
+        let renderer = match backend {
+            Vulkan => VulkanRenderer::init(window)?,
+            OpenGL => OpenGLRenderer::init(window)?,
+            _ => return Err(GraphicsError::UnsupportedBackend)
+        };
+        
+        // Subsystems initialization
+        let shader_manager = ShaderManager::new(renderer.clone());
+        let texture_manager = TextureManager::new(renderer.clone());
+        let material_system = MaterialSystem::new();
+        let render_queue = RenderQueue::new(renderer.clone());
+        
+        GraphicsEngine {
+            window,
+            renderer,
+            shader_manager,
+            texture_manager,
+            material_system,
+            render_queue,
+            stats: RenderStats::new()
+        }
+    }
+
+    /// Load and compile shader program
+    pub fn load_shader(
+        &mut self,
+        name: string,
+        vertex_path: string,
+        fragment_path: string,
+        geometry_path: Option<string>
+    ) -> Result<ShaderHandle, ShaderError> {
+        let vertex_src = fs::read_to_string(vertex_path)?;
+        let fragment_src = fs::read_to_string(fragment_path)?;
+        let geometry_src = match geometry_path {
+            Some(path) => Some(fs::read_to_string(path)?),
+            None => None
+        };
+        
+        self.shader_manager.create_program(
+            name,
+            &vertex_src,
+            &fragment_src,
+            geometry_src.as_deref()
+        )
+    }
+
+    /// Submit mesh for rendering
+    pub fn submit_mesh(
+        &mut self,
+        mesh: &Mesh,
+        material: &Material,
+        transform: &Transform
+    ) {
+        let render_command = RenderCommand {
+            mesh: mesh.clone(),
+            material: material.clone(),
+            transform: transform.clone(),
+            camera: self.current_camera.clone()
+        };
+        
+        self.render_queue.push(render_command);
+    }
+
+    /// Execute all rendering commands
+    pub fn render_frame(&mut self) -> Result<(), RenderError> {
+        self.renderer.begin_frame();
+        
+        // Process all render commands
+        while let Some(command) = self.render_queue.pop() {
+            self.process_render_command(command)?;
+        }
+        
+        self.renderer.end_frame();
+        self.stats.update();
+        
+        Ok(())
+    }
+}
