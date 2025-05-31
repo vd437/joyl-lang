@@ -1,0 +1,55 @@
+import {
+    robotic_arm,
+    navigation,
+    robot_vision,
+    ros_integration
+} from "robotics";
+
+async fn main() {
+    // Initialize ROS node
+    ros_integration::init(["joyl_robot"]);
+    let node = ros_integration::Node::new("mobile_manipulator");
+    
+    // Create robot components
+    let arm = robotic_arm::create_6dof_arm();
+    let nav_stack = navigation::NavigationStack::new();
+    let detector = robot_vision::YOLODetector::new("yolov5s.joyl");
+    
+    // ROS subscribers
+    node.create_subscriber("/cmd_vel", ros_integration::Twist, handle_velocity);
+    node.create_subscriber("/move_base/goal", PoseStamped, handle_nav_goal);
+    
+    // Main control loop
+    loop {
+        // Get camera image
+        let image = get_camera_image();
+        
+        // Detect objects
+        let detections = detector.detect(image);
+        
+        // Process detections
+        for det in detections {
+            if det.class_name == "target_object" {
+                // Calculate object position
+                let object_pose = calculate_object_pose(det);
+                
+                // Move arm to object
+                arm.move_to_position(object_pose)?;
+                
+                // Perform grasp
+                arm.grasp()?;
+                
+                // Move to delivery position
+                arm.move_to_position(home_pose)?;
+                
+                // Release object
+                arm.release()?;
+            }
+        }
+        
+        // Handle navigation
+        nav_stack.update();
+        
+        sleep(Duration::from_millis(100)).await;
+    }
+}
